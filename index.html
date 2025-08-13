@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<title>Générateur de Cartes de Visite — CRÉATIVE ENTREPRISE</title>
+<meta name="theme-color" content="#0b0f1e">
+<style>
+  :root{
+    --bg:#0b0f1e; --panel:#0e1431; --glass1:rgba(255,255,255,.06); --glass2:rgba(255,255,255,.03);
+    --line:#1b2458; --txt:#eaf2ff; --muted:#a6b4ff; --acc1:#00e5ff; --acc2:#7aa2ff; --ok:#2fe7a3; --ko:#ff6b6b;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; color:var(--txt); font-family:system-ui,Inter,Segoe UI,Roboto,Arial,sans-serif;
+    background:
+      radial-gradient(1200px 800px at 80% -10%, #1a2258 0, transparent 60%),
+      radial-gradient(900px 600px at 0% 110%, #311c5e 0, transparent 60%),
+      linear-gradient(180deg,#0c1128,#070a19), var(--bg);
+  }
+  header{
+    position:sticky;top:0;z-index:20;
+    background:linear-gradient(180deg,rgba(10,14,36,.9),rgba(9,12,28,.7));
+    -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .head{max-width:1150px;margin:0 auto;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--acc1),var(--acc2));box-shadow:0 8px 24px rgba(122,162,255,.35), inset 0 0 14px rgba(255,255,255,.2)}
+  .title{font-weight:900;letter-spacing:.02em}
+  .subtitle{color:var(--muted);font-size:.9rem}
+  .status{border:1px solid var(--line);border-radius:999px;padding:.4rem .75rem;background:linear-gradient(180deg,rgba(25,31,84,.9),rgba(16,18,48,.9));font-weight:800}
+
+  .wrap{max-width:1150px;margin:10px auto 90px;padding:0 12px}
+  .app{display:grid;grid-template-columns:1fr;gap:12px}
+  @media(min-width:980px){ .app{grid-template-columns:360px 1fr} }
+  aside,section{border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,var(--glass1),var(--glass2));-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);padding:12px}
+  h2{margin:.3rem 0 .5rem}
+  .muted{color:var(--muted)}
+  .row{display:flex;gap:8px;flex-wrap:wrap}
+  .row>*{flex:1}
+  input[type=text],input[type=color],input[type=number],textarea,select{
+    width:100%;padding:.7rem .8rem;border:1px solid #2a3688;border-radius:10px;background:#0a0f26;color:#eaf2ff
+  }
+  input[type=file]{width:100%}
+  .btn{appearance:none;border:1px solid var(--line);border-radius:10px;padding:.7rem .9rem;font-weight:800;color:#eaf2ff;background:linear-gradient(180deg,rgba(26,32,90,.95),rgba(12,16,40,.95));cursor:pointer}
+  .btn.primary{background:linear-gradient(135deg,var(--acc1),var(--acc2));color:#07122a;border-color:transparent}
+  .btn.ghost{background:transparent}
+  .pill{padding:.35rem .55rem;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.06);font-variant-numeric:tabular-nums}
+
+  .templates{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+  .tpl{border:1px solid var(--line);border-radius:10px;cursor:pointer;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02))}
+  .tpl canvas{display:block;width:100%;height:auto}
+  .tpl.sel{outline:2px solid #2b3aa8}
+
+  .stage{display:grid;grid-template-columns:1fr;gap:10px}
+  @media(min-width:780px){ .stage{grid-template-columns:1fr 1fr} }
+  .card{border:1px solid var(--line);border-radius:12px;padding:10px;background:linear-gradient(180deg,var(--glass1),var(--glass2))}
+  .canvasWrap{display:grid;place-items:center;background:#0b0f26;border:1px dashed #2a3688;border-radius:12px;padding:8px}
+  canvas#front, canvas#back{max-width:100%;background:#fff;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap}
+  .hint{font-size:.92rem;color:var(--muted)}
+  .ok{color:var(--ok)} .ko{color:var(--ko)}
+
+  footer{position:fixed;left:0;right:0;bottom:0;z-index:5;display:flex;justify-content:center}
+  .bar{max-width:1150px;margin:0 auto 10px;background:linear-gradient(180deg,var(--glass1),var(--glass2));border:1px solid var(--line);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:999px;padding:8px 10px;display:flex;gap:8px;align-items:center}
+  .grow{flex:1}
+</style>
+</head>
+<body>
+<header>
+  <div class="head">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <div>
+        <div class="title">Générateur de carte de visite</div>
+        <div class="subtitle">Branding pro • 100% local • Export HD</div>
+      </div>
+    </div>
+    <div class="status" id="status">Prêt ✅</div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="app">
+    <!-- Panneau gauche : Infos & Style -->
+    <aside>
+      <h2>1) Informations</h2>
+      <div class="row">
+        <label>Nom complet<input id="name" type="text" placeholder="Ex: MARTIAL H."></label>
+        <label>Poste / Fonction<input id="role" type="text" placeholder="Ex: CEO / Développeur"></label>
+      </div>
+      <div class="row">
+        <label>Entreprise (optionnel)<input id="company" type="text" placeholder="Nom de l'entreprise"></label>
+        <label>Slogan (optionnel)<input id="tagline" type="text" placeholder="Ex: We build the future"></label>
+      </div>
+      <div class="row">
+        <label>Téléphone(s) (séparés par ;)<input id="phones" type="text" placeholder="+229 … ; +33 …"></label>
+      </div>
+      <div class="row">
+        <label>Email(s) (séparés par ;)<input id="emails" type="text" placeholder="exemple@domaine.com"></label>
+      </div>
+      <div class="row">
+        <label>Site web<input id="website" type="text" placeholder="https://…"></label>
+        <label>Adresse<input id="address" type="text" placeholder="Adresse complète (optionnel)"></label>
+      </div>
+      <div class="row">
+        <label>Réseaux (clé:valeur; …)
+          <input id="socials" type="text" placeholder="whatsapp:+229…; facebook:@page; instagram:@compte">
+        </label>
+      </div>
+      <div class="row">
+        <label>QR Code (URL ou vCard automatique)
+          <input id="qr" type="text" placeholder="https://site.com ou laisser vide">
+        </label>
+      </div>
+      <div class="row">
+        <label>Logo / Photo<input id="logo" type="file" accept="image/*"></label>
+        <label>Image de fond (optionnel)<input id="bgimg" type="file" accept="image/*"></label>
+      </div>
+
+      <h2>2) Style</h2>
+      <div class="row">
+        <label>Modèle
+          <select id="template">
+            <option value="waves">Vagues (futuriste)</option>
+            <option value="diagonal">Diagonal pro</option>
+            <option value="circles">Cercles premium</option>
+            <option value="ribbon">Ruban moderne</option>
+            <option value="angles">Angles tech</option>
+            <option value="luxe">Luxe sombre</option>
+          </select>
+        </label>
+        <label>Couleur A<input id="c1" type="color" value="#6e35ff"></label>
+        <label>Couleur B<input id="c2" type="color" value="#00e5ff"></label>
+      </div>
+      <div class="row">
+        <label>Police (titres)
+          <select id="fontH">
+            <option value="600 19px/1.1 Poppins, Inter, system-ui, sans-serif">Poppins / Bold</option>
+            <option value="800 20px/1.1 Outfit, Inter, system-ui, sans-serif">Outfit / ExtraBold</option>
+            <option value="700 19px/1.1 Montserrat, Inter, system-ui, sans-serif">Montserrat / Bold</option>
+            <option value="900 20px/1.1 Bebas Neue, Inter, system-ui, sans-serif">Bebas Neue</option>
+          </select>
+        </label>
+        <label>Police (texte)
+          <select id="fontB">
+            <option value="400 12px/1.45 Inter, system-ui, sans-serif">Inter</option>
+            <option value="400 12px/1.45 Roboto, system-ui, sans-serif">Roboto</option>
+            <option value="400 12px/1.45 Manrope, system-ui, sans-serif">Manrope</option>
+            <option value="400 12px/1.45 Nunito Sans, system-ui, sans-serif">Nunito Sans</option>
+          </select>
+        </label>
+      </div>
+      <div class="row">
+        <button class="btn" id="reset">Réinitialiser</button>
+        <button class="btn primary" id="refresh">Mettre à jour l’aperçu</button>
+      </div>
+
+      <h2>3) Modèles (aperçu)</h2>
+      <div class="templates" id="tplGrid"></div>
+      <div class="hint">Astuce : charge un logo et une image de fond pour des résultats uniques. Tout se passe en local.</div>
+    </aside>
+
+    <!-- Panneau droit : Aperçu & Export -->
+    <section>
+      <div class="tabs">
+        <span class="pill">Taille carte : 85 × 55 mm — export 300 DPI</span>
+        <span class="pill" id="info">Recto/Verso éditables • QR code optionnel</span>
+      </div>
+
+      <div class="stage">
+        <div class="card">
+          <div class="row" style="align-items:center;justify-content:space-between">
+            <h2>Recto</h2>
+            <button class="btn ghost" id="swap">↔️ Inverser couleurs</button>
+          </div>
+          <div class="canvasWrap">
+            <canvas id="front" width="1005" height="650"></canvas>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Verso</h2>
+          <div class="canvasWrap">
+            <canvas id="back" width="1005" height="650"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<footer>
+  <div class="bar">
+    <div class="grow hint">Télécharger <b>gratuit</b> (filigrane discret) ou entrer le code <b>CREATIVE</b> pour un export <b>sans filigrane</b>.</div>
+    <button class="btn" id="dlMarked">PNG HD (filigrané)</button>
+    <button class="btn" id="dlMarkedPdf">PDF (filigrané)</button>
+    <button class="btn primary" id="dlClean">Export HD sans filigrane</button>
+  </div>
+</footer>
+
+<!-- Libs -->
+<script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+
+<script>
+(()=>{'use strict';
+/* ====== Utils ====== */
+const $=(s,r=document)=>r.querySelector(s);
+const statusEl=$('#status');
+const setStatus=t=>statusEl.textContent=t;
+const mmToPx=mm=>Math.round(mm*11.811); // 300 DPI -> 1mm ≈ 11.811px  (85x55mm -> 1004x649)
+const CANVAS_W=1005, CANVAS_H=650; // 85x55mm @300dpi arrondi
+
+const loadImage = src => new Promise((res,rej)=>{ const img=new Image(); img.onload=()=>res(img); img.onerror=rej; img.src=src; });
+const fileToDataURL = f => new Promise((res,rej)=>{ const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(f); });
+
+/* ====== State ====== */
+const state = {
+  name:'MARTIAL H.',
+  role:'CEO / Développeur',
+  company:'CRÉATIVE ENTREPRISE',
+  tagline:'Create. Build. Grow.',
+  phones:'+229 00 00 00 00',
+  emails:'contact@exemple.com',
+  website:'https://site.com',
+  address:'Cotonou, Bénin',
+  socials:'whatsapp:+22900000000; facebook:@creative; instagram:@brand',
+  qr:'',
+  c1:'#6e35ff', c2:'#00e5ff',
+  fontH:'800 20px/1.1 Outfit, Inter, system-ui, sans-serif',
+  fontB:'400 12px/1.45 Inter, system-ui, sans-serif',
+  template:'waves',
+  logo:null, bgimg:null
+};
+
+/* ====== Bind inputs ====== */
+const fields=['name','role','company','tagline','phones','emails','website','address','socials','qr'];
+fields.forEach(id=>{ const el=$('#'+id); el.addEventListener('input',()=>{ state[id]=el.value; schedule(); }); el.value=state[id]; });
+['c1','c2','fontH','fontB','template'].forEach(id=>{ const el=$('#'+id); el.addEventListener('input',()=>{ state[id]=el.value; schedule(); }); el.value=state[id]; });
+
+$('#logo').addEventListener('change',async e=>{ const f=e.target.files[0]; if(!f) return; state.logo=await fileToDataURL(f); schedule(); });
+$('#bgimg').addEventListener('change',async e=>{ const f=e.target.files[0]; if(!f) return; state.bgimg=await fileToDataURL(f); schedule(); });
+
+$('#refresh').onclick=()=> drawAll();
+$('#reset').onclick=()=>{ Object.assign(state,{...state,logo:null,bgimg:null}); fields.forEach(id=>$('#'+id).value=''); schedule(); };
+$('#swap').onclick=()=>{ const x=state.c1; state.c1=state.c2; state.c2=x; $('#c1').value=state.c1; $('#c2').value=state.c2; schedule(); };
+
+/* ====== Templates gallery ====== */
+const tplGrid=$('#tplGrid'); const TPLS=['waves','diagonal','circles','ribbon','angles','luxe'];
+TPLS.forEach(t=>{
+  const c=document.createElement('canvas'); c.width=320; c.height=200;
+  const ctx=c.getContext('2d');
+  previewTemplate(ctx,t,'#6e35ff','#00e5ff');
+  const wrap=document.createElement('div'); wrap.className='tpl'+(t===state.template?' sel':''); wrap.appendChild(c); wrap.onclick=()=>{ state.template=t; $('#template').value=t; [...tplGrid.children].forEach(x=>x.classList.remove('sel')); wrap.classList.add('sel'); schedule(); };
+  tplGrid.appendChild(wrap);
+});
+function previewTemplate(ctx,t,c1,c2){
+  const W=ctx.canvas.width,H=ctx.canvas.height; const g=ctx.createLinearGradient(0,0,W,H); g.addColorStop(0,c1); g.addColorStop(1,c2);
+  ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
+  if(t==='waves'){
+    ctx.fillStyle=g; wave(ctx,0,H*0.55,W,H*0.65,28); ctx.fill();
+    ctx.fillStyle='rgba(0,0,0,.06)'; circle(ctx,W*0.8,H*0.4,55); ctx.fill();
+  }else if(t==='diagonal'){
+    ctx.fillStyle=g; poly(ctx,[0,H, W*0.65,0, W,0, W,H, 0,H]); ctx.fill();
+  }else if(t==='circles'){
+    ctx.fillStyle=g; circle(ctx,W*0.22,H*0.52,60); ctx.fill(); ctx.globalAlpha=.15; circle(ctx,W*0.78,H*0.4,70); ctx.fill(); ctx.globalAlpha=1;
+  }else if(t==='ribbon'){
+    ctx.fillStyle=g; poly(ctx,[0,H*0.65, W,H*0.35, W,H, 0,H]); ctx.fill();
+  }else if(t==='angles'){
+    ctx.fillStyle=g; poly(ctx,[0,0, W*0.72,0, W,H*0.38, W,H, 0,H, 0,0]); ctx.fill();
+  }else if(t==='luxe'){
+    ctx.fillStyle='#0b0f26'; ctx.fillRect(0,0,W,H); ctx.strokeStyle='rgba(255,255,255,.2)'; ctx.lineWidth=1.2; for(let i=0;i<6;i++){ ctx.beginPath(); ctx.moveTo(0,i*34+20); ctx.lineTo(W,i*34+10); ctx.stroke(); }
+    ctx.fillStyle=g; circle(ctx,W*0.15,H*0.25,36); ctx.fill();
+  }
+  function circle(ctx,x,y,r){ ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); }
+  function poly(ctx,pts){ ctx.beginPath(); ctx.moveTo(pts[0],pts[1]); for(let i=2;i<pts.length;i+=2) ctx.lineTo(pts[i],pts[i+1]); ctx.closePath(); }
+  function wave(ctx,x0,y0,w,h,amp){ ctx.beginPath(); ctx.moveTo(0,H); ctx.lineTo(0,y0); for(let x=0;x<=W;x+=10){ const y=y0 + Math.sin((x/W)*Math.PI)*amp; ctx.lineTo(x,y); } ctx.lineTo(W,H); ctx.closePath(); }
+}
+
+/* ====== Drawing ====== */
+const front=$('#front'), back=$('#back');
+async function drawAll(){ setStatus('Génération…'); await Promise.all([drawCard(front,true), drawCard(back,false)]); setStatus('Prêt ✅'); }
+
+async function drawCard(canvas,isFront){
+  const ctx=canvas.getContext('2d'); const W=canvas.width,H=canvas.height;
+  ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
+
+  // Background image if any
+  if(state.bgimg){ const img=await loadImage(state.bgimg); const r=Math.max(W/img.width,H/img.height); const w=img.width*r,h=img.height*r; ctx.globalAlpha=0.2; ctx.drawImage(img,(W-w)/2,(H-h)/2,w,h); ctx.globalAlpha=1; }
+
+  // Template shape
+  const g=ctx.createLinearGradient(0,0,W,H); g.addColorStop(0,state.c1); g.addColorStop(1,state.c2);
+  const g2=ctx.createLinearGradient(0,H,W,0); g2.addColorStop(0,state.c2); g2.addColorStop(1,state.c1);
+
+  if(state.template==='waves'){
+    ctx.fillStyle=g; wave(ctx,0,H*0.62,W,H*0.72,40); ctx.fill();
+    if(isFront){ ctx.globalAlpha=.08; circle(ctx,W*0.80,H*0.38,120); ctx.fill(); ctx.globalAlpha=1; }
+  } else if(state.template==='diagonal'){
+    ctx.fillStyle=g; poly(ctx,[0,H, W*0.62,0, W,0, W,H, 0,H]); ctx.fill();
+  } else if(state.template==='circles'){
+    ctx.fillStyle=g; circle(ctx,W*0.22,H*0.72,140); ctx.fill(); ctx.globalAlpha=.1; circle(ctx,W*0.78,H*0.32,160); ctx.fill(); ctx.globalAlpha=1;
+  } else if(state.template==='ribbon'){
+    ctx.fillStyle=g; poly(ctx,[0,H*0.68, W,H*0.36, W,H, 0,H]); ctx.fill();
+    ctx.fillStyle=g2; poly(ctx,[0,0, W*0.75,0, 0,H*0.28, 0,0]); ctx.fill();
+  } else if(state.template==='angles'){
+    ctx.fillStyle=g; poly(ctx,[0,0, W*0.74,0, W,H*0.38, W,H, 0,H, 0,0]); ctx.fill();
+  } else if(state.template==='luxe'){
+    ctx.fillStyle='#0b0f26'; ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle='rgba(255,255,255,.16)'; ctx.lineWidth=1.4; for(let i=0;i<8;i++){ ctx.beginPath(); ctx.moveTo(0,i*80+24); ctx.lineTo(W,i*80+6); ctx.stroke(); }
+    ctx.fillStyle=g; circle(ctx,W*0.14,H*0.22,60); ctx.fill(); ctx.globalAlpha=.08; circle(ctx,W*0.86,H*0.78,120); ctx.fill(); ctx.globalAlpha=1;
+  }
+
+  // Logo/photo (cercle)
+  if(state.logo){
+    const img=await loadImage(state.logo);
+    const r=120/Math.max(img.width,img.height); const w=img.width*r, h=img.height*r;
+    const cx=isFront? (W*0.82) : (W*0.18), cy=isFront? (H*0.32) : (H*0.68);
+    ctx.save(); ctx.beginPath(); ctx.arc(cx,cy,70,0,Math.PI*2); ctx.clip(); ctx.drawImage(img,cx-w/2,cy-h/2,w,h); ctx.restore();
+    ctx.strokeStyle='rgba(0,0,0,.15)'; ctx.lineWidth=4; ctx.beginPath(); ctx.arc(cx,cy,70,0,Math.PI*2); ctx.stroke();
+  }
+
+  // Text styles
+  ctx.fillStyle='#0c0f1a';
+  ctx.font=state.fontH; const nameY=isFront? 120:140;
+  ctx.textBaseline='top';
+  ctx.fillText(state.name||'', 40, nameY);
+  ctx.font='600 14px/1.1 Inter, system-ui, sans-serif';
+  if(state.role) ctx.fillText(state.role, 40, nameY+28);
+
+  // Company + tagline
+  ctx.font='700 16px/1.2 Inter,system-ui,sans-serif'; if(state.company) ctx.fillText(state.company, 40, 40);
+  ctx.font='400 12px/1.45 Inter,system-ui,sans-serif'; ctx.fillStyle='rgba(0,0,0,.75)'; if(state.tagline) ctx.fillText(state.tagline, 40, 62);
+
+  // Contact block (left)
+  ctx.fillStyle='#0c0f1a'; ctx.font=state.fontB;
+  const lines=[];
+  if(state.phones) state.phones.split(';').map(s=>s.trim()).filter(Boolean).forEach(t=>lines.push('📞 '+t));
+  if(state.emails) state.emails.split(';').map(s=>s.trim()).filter(Boolean).forEach(t=>lines.push('✉️ '+t));
+  if(state.website) lines.push('🌐 '+state.website);
+  if(state.address) lines.push('📍 '+state.address);
+  let y=nameY+60; lines.forEach(l=>{ ctx.fillText(l, 40, y); y+=18; });
+
+  // Socials (right column small)
+  const socials=parseSocials(state.socials);
+  if(socials.length){
+    let sy=nameY+60, sx=W-360;
+    ctx.textAlign='left'; ctx.fillStyle='#0c0f1a'; ctx.font=state.fontB;
+    socials.forEach(([k,v])=>{ ctx.fillText(iconFor(k)+' '+v, sx, sy); sy+=18; });
+  }
+
+  // QR code (back side by default, or front if provided + template supports)
+  if(state.qr){
+    const tmp=document.createElement('canvas');
+    QRCode.toCanvas(tmp, state.qr, {margin:1,width:180,color:{dark:'#000',light:'#fff'}}, (e)=>{});
+    const qx=isFront? (W-240) : (W-240), qy=isFront? (H-240) : (H-240);
+    ctx.drawImage(tmp,qx,qy,180,180);
+    ctx.font='400 11px/1 Inter,system-ui'; ctx.fillStyle='rgba(0,0,0,.7)'; ctx.fillText('Scan me', qx+54, qy+186);
+  }
+
+  // Helpers
+  function circle(ctx,x,y,r){ ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); }
+  function poly(ctx,pts){ ctx.beginPath(); ctx.moveTo(pts[0],pts[1]); for(let i=2;i<pts.length;i+=2) ctx.lineTo(pts[i],pts[i+1]); ctx.closePath(); }
+  function wave(ctx,x0,y0,w,h,amp){ ctx.beginPath(); ctx.moveTo(0,H); ctx.lineTo(0,y0); for(let x=0;x<=W;x+=8){ const y=y0 + Math.sin((x/W)*Math.PI)*amp; ctx.lineTo(x,y); } ctx.lineTo(W,H); ctx.closePath(); }
+
+  return canvas;
+}
+
+function parseSocials(s){
+  return (s||'').split(';').map(x=>x.trim()).filter(Boolean).map(t=>{
+    const [k,...rest]=t.split(':'); return [k?.toLowerCase()?.trim()||'', rest.join(':').trim()];
+  }).filter(([k,v])=>k&&v);
+}
+function iconFor(k){
+  const map={whatsapp:'🟢', facebook:'📘', instagram:'🟣', tiktok:'🎵', twitter:'🐦', x:'❌', linkedin:'💼', youtube:'▶️', telegram:'💬'};
+  return map[k]||'🔗';
+}
+
+/* ====== Export ====== */
+async function exportPNG({clean=false}={}){
+  await drawAll();
+  const f=front, b=back;
+  const f2 = await withWatermark(f, clean? null : 'CRÉATIVE ENTREPRISE');
+  const b2 = await withWatermark(b, clean? null : 'CRÉATIVE ENTREPRISE');
+  f2.toBlob(blob=>saveAs(blob,'carte_recto.png'),'image/png',0.95);
+  b2.toBlob(blob=>saveAs(blob,'carte_verso.png'),'image/png',0.95);
+}
+async function exportPDF({clean=false}={}){
+  await drawAll();
+  const { jsPDF }=window.jspdf;
+  const pdf=new jsPDF({unit:'pt',format:[CANVAS_W,CANVAS_H]}); // une page = recto
+  const f=await canvasToDataURL(await withWatermark(front, clean?null:'CRÉATIVE ENTREPRISE'));
+  pdf.addImage(f,'PNG',0,0,CANVAS_W,CANVAS_H);
+  pdf.addPage([CANVAS_W,CANVAS_H]);
+  const b=await canvasToDataURL(await withWatermark(back, clean?null:'CRÉATIVE ENTREPRISE'));
+  pdf.addImage(b,'PNG',0,0,CANVAS_W,CANVAS_H);
+  const blob=pdf.output('blob'); saveAs(blob, clean?'carte_HD.pdf':'carte_filigranée.pdf');
+}
+function canvasToDataURL(c){ return new Promise(res=>res(c.toDataURL('image/png',0.95))); }
+async function withWatermark(srcCanvas, mark){
+  if(!mark) return srcCanvas;
+  const c=document.createElement('canvas'); c.width=srcCanvas.width; c.height=srcCanvas.height;
+  const ctx=c.getContext('2d'); ctx.drawImage(srcCanvas,0,0);
+  ctx.globalAlpha=.9; ctx.fillStyle='rgba(0,0,0,.65)'; ctx.font='600 16px/1 Inter, system-ui'; const pad=16; const text= mark + ' — signe';
+  const tw=ctx.measureText(text).width; ctx.fillText(text, c.width - tw - pad, c.height - 24);
+  return c;
+}
+
+/* ====== Download buttons ====== */
+$('#dlMarked').onclick = ()=> exportPNG({clean:false});
+$('#dlMarkedPdf').onclick = ()=> exportPDF({clean:false});
+$('#dlClean').onclick = async ()=>{
+  const code = prompt('Entrez le code pour un export SANS filigrane :');
+  if((code||'').trim().toUpperCase()==='CREATIVE'){ setStatus('Export HD sans filigrane…'); await exportPNG({clean:true}); await exportPDF({clean:true}); setStatus('Prêt ✅'); }
+  else{ alert('Code invalide. Export avec filigrane proposé.'); await exportPNG({clean:false}); }
+};
+
+/* ====== Live render throttle ====== */
+let timer=null; function schedule(){ clearTimeout(timer); timer=setTimeout(drawAll, 140); }
+
+/* ====== First paint ====== */
+drawAll();
+})();
+</script>
+</body>
+</html>
