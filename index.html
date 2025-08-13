@@ -35,7 +35,7 @@
   .wrap{max-width:1180px;margin:10px auto 90px;padding:0 12px}
   .wizard{border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,var(--glass1),var(--glass2));backdrop-filter:blur(10px);padding:12px}
   .steps{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-  .step{display:flex;align-items:center;gap:8px;padding:.45rem .65rem;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.05);font-size:.92rem}
+  .step{display:flex;align-items:center;gap:8px;padding:.45rem .65rem;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.05);font-size:.92rem;cursor:pointer}
   .step.active{outline:2px solid rgba(255,138,0,.65)}
   h2{margin:.3rem 0 .5rem}
   .muted{color:var(--muted)}
@@ -118,12 +118,12 @@
           <b>Taille des textes (aperçu & export)</b>
           <div class="row" style="margin-top:6px">
             <label>Nom (px) <input id="sizeName" type="number" min="14" max="36" value="22"></label>
-            <label>Sous‑titre (px) <input id="sizeSub" type="number" min="10" max="22" value="14"></label>
+            <label>Sous-titre (px) <input id="sizeSub" type="number" min="10" max="22" value="14"></label>
             <label>Corps (px) <input id="sizeBody" type="number" min="10" max="18" value="12"></label>
           </div>
           <label style="display:flex;gap:8px;align-items:center;margin-top:6px">
             <input id="autofit" type="checkbox" checked>
-            <span>Auto‑ajuster les textes pour éviter tout dépassement</span>
+            <span>Auto-ajuster les textes pour éviter tout dépassement</span>
           </label>
         </div>
       </div>
@@ -154,7 +154,7 @@
       </div>
       <div class="row">
         <label>QR Code (URL ou laisser vide)
-          <input id="qr" type="url" placeholder="https://votre‑lien.com">
+          <input id="qr" type="url" placeholder="https://votre-lien.com">
         </label>
       </div>
       <p class="muted">Astuce : si tu laisses vide, aucun QR ne sera ajouté.</p>
@@ -226,12 +226,14 @@ const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const toast=(t)=>{ const el=$('#toast'); el.textContent=t; el.hidden=false; setTimeout(()=>el.hidden=true,1800); };
 const setStatus=t=> $('#status').textContent=t;
+const fileToDataURL = f => new Promise((res,rej)=>{ const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(f); });
+const loadImage = src => new Promise((res,rej)=>{ const img=new Image(); img.onload=()=>res(img); img.onerror=rej; img.src=src; });
 
 /* ====== State & persistence ====== */
 const CANVAS_W=1005, CANVAS_H=650;
 const state = JSON.parse(localStorage.getItem('card_state')||'{}');
 Object.assign(state,{
-  step: state.step||1,
+  step: Number(state.step||1),
   template: state.template||'waves',
   c1: state.c1||'#ff8a00',
   c2: state.c2||'#ffb45a',
@@ -239,9 +241,9 @@ Object.assign(state,{
   role: state.role||'',
   company: state.company||'',
   tagline: state.tagline||'',
-  sizeName: +state.sizeName||22,
-  sizeSub: +state.sizeSub||14,
-  sizeBody: +state.sizeBody||12,
+  sizeName: Number(state.sizeName||22),
+  sizeSub: Number(state.sizeSub||14),
+  sizeBody: Number(state.sizeBody||12),
   autofit: state.autofit!==false, // default ON
   phones: state.phones||'',
   emails: state.emails||'',
@@ -265,30 +267,38 @@ $('#autofit').addEventListener('change',()=>{ state.autofit=$('#autofit').checke
 $('#logo').addEventListener('change',async e=>{ const f=e.target.files[0]; if(!f) return; state.logo=await fileToDataURL(f); save(); schedule(); });
 $('#bgimg').addEventListener('change',async e=>{ const f=e.target.files[0]; if(!f) return; state.bgimg=await fileToDataURL(f); save(); schedule(); });
 
-/* ====== Steps UI ====== */
+/* ====== Steps UI (robuste) ====== */
 const stepsMeta=['Modèle','Identité','Contacts','Réseaux & QR','Visuels','Aperçu','Téléchargement'];
 const stepsBox=$('#steps');
-stepsMeta.forEach((t,i)=>{ const b=document.createElement('div'); b.className='step'; b.dataset.i=i+1; b.innerHTML=`<b>${i+1}</b> ${t}`; b.onclick=()=>goto(i+1); stepsBox.appendChild(b); });
-function goto(n){
-  state.step=n; save();
-  $$('section[data-step]').forEach(s=> s.hidden = +s.dataset.step !== n);
-  $$('.step').forEach(s=> s.classList.toggle('active', +s.dataset.i===n));
+stepsBox.innerHTML=''; // reset au cas où
+stepsMeta.forEach((t,i)=>{ const b=document.createElement('div'); b.className='step'; b.dataset.i=String(i+1); b.innerHTML=`<b>${i+1}</b> ${t}`; b.addEventListener('click',()=>goto(i+1)); stepsBox.appendChild(b); });
+
+function showStep(n){
+  $$('section[data-step]').forEach(s=> s.hidden = Number(s.dataset.step)!==n);
+  $$('.step').forEach(s=> s.classList.toggle('active', Number(s.dataset.i)===n));
   $('#prev').disabled = n===1;
   $('#next').textContent = n===7 ? 'Terminer' : 'Suivant →';
   setStatus(`Étape ${n}/7`);
   if(n===6) drawAll();
 }
-$('#prev').onclick = ()=>{ if(state.step>1) goto(state.step-1); };
-$('#next').onclick = ()=>{ if(state.step<7) goto(state.step+1); else toast('Tu peux télécharger maintenant.'); };
-goto(state.step);
+function goto(n){
+  state.step = Math.max(1, Math.min(7, Number(n)||1));
+  save();
+  showStep(state.step);
+}
+$('#prev').addEventListener('click', ()=> goto(state.step-1));
+$('#next').addEventListener('click', ()=> { if(state.step<7) goto(state.step+1); else toast('Tu peux télécharger maintenant.'); });
+
+goto(state.step); // affichage initial fiable
 
 /* ====== Templates preview (neutres) ====== */
 const tplGrid=$('#tplGrid'); const TPLS=['waves','diagonal','circles','ribbon','angles','luxe'];
+tplGrid.innerHTML='';
 TPLS.forEach(t=>{
   const c=document.createElement('canvas'); c.width=320; c.height=200; const ctx=c.getContext('2d');
   previewTemplate(ctx,t,state.c1,state.c2);
   const wrap=document.createElement('div'); wrap.className='tpl'+(t===state.template?' sel':''); wrap.appendChild(c);
-  wrap.onclick=()=>{ state.template=t; $('#template').value=t; save(); [...tplGrid.children].forEach(x=>x.classList.remove('sel')); wrap.classList.add('sel'); schedule(); };
+  wrap.addEventListener('click',()=>{ state.template=t; $('#template').value=t; save(); [...tplGrid.children].forEach(x=>x.classList.remove('sel')); wrap.classList.add('sel'); schedule(); });
   tplGrid.appendChild(wrap);
 });
 function previewTemplate(ctx,t,c1,c2){
@@ -307,32 +317,32 @@ function previewTemplate(ctx,t,c1,c2){
 
 /* ====== Canvas drawing ====== */
 const front=$('#front'), back=$('#back');
-const fileToDataURL = f => new Promise((res,rej)=>{ const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(f); });
-const loadImage = src => new Promise((res,rej)=>{ const img=new Image(); img.onload=()=>res(img); img.onerror=rej; img.src=src; });
 
-function fitText(ctx, text, maxWidth, desiredPx, minPx){
-  let size=desiredPx;
-  ctx.font=`800 ${size}px/1.15 Inter, system-ui, sans-serif`;
+function fitBold(ctx, text, maxWidth, desiredPx, minPx){
+  let size=desiredPx; ctx.font=`800 ${size}px/1.15 Inter, system-ui, sans-serif`;
   while(size>minPx && ctx.measureText(text).width>maxWidth){ size-=1; ctx.font=`800 ${size}px/1.15 Inter, system-ui, sans-serif`; }
   return size;
 }
-function fitLine(ctx, text, maxWidth, desiredPx, minPx, weight=400){
-  let size=desiredPx;
-  ctx.font=`${weight} ${size}px/1.45 Inter, system-ui, sans-serif`;
+function fitRegular(ctx, text, maxWidth, desiredPx, minPx, weight=400){
+  let size=desiredPx; ctx.font=`${weight} ${size}px/1.45 Inter, system-ui, sans-serif`;
   while(size>minPx && ctx.measureText(text).width>maxWidth){ size-=1; ctx.font=`${weight} ${size}px/1.45 Inter, system-ui, sans-serif`; }
   return size;
 }
 
-async function drawAll(){ await Promise.all([drawCard(front,true), drawCard(back,false)]); }
+async function drawAll(){
+  try{
+    await Promise.all([drawCard(front,true), drawCard(back,false)]);
+  }catch(e){ console.error(e); toast('Erreur de rendu'); }
+}
 
 async function drawCard(canvas,isFront){
   const ctx=canvas.getContext('2d'); const W=canvas.width,H=canvas.height;
   ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
 
-  // BG image (soft)
+  // BG image (adoucit)
   if(state.bgimg){ const img=await loadImage(state.bgimg); const r=Math.max(W/img.width,H/img.height); ctx.globalAlpha=.18; ctx.drawImage(img,(W-img.width*r)/2,(H-img.height*r)/2,img.width*r,img.height*r); ctx.globalAlpha=1; }
 
-  // Accent gradients
+  // Accents orange (glass)
   const g=ctx.createLinearGradient(0,0,W,H); g.addColorStop(0,state.c1); g.addColorStop(1,state.c2);
   const g2=ctx.createLinearGradient(0,H,W,0); g2.addColorStop(0,state.c2); g2.addColorStop(1,state.c1);
 
@@ -343,7 +353,7 @@ async function drawCard(canvas,isFront){
   else if(state.template==='angles'){ ctx.fillStyle=g; poly(ctx,[0,0, W*0.74,0, W,H*0.38, W,H, 0,H, 0,0]); ctx.fill(); }
   else if(state.template==='luxe'){ ctx.fillStyle='#0b0f26'; ctx.fillRect(0,0,W,H); ctx.strokeStyle='rgba(0,0,0,.16)'; for(let i=0;i<8;i++){ ctx.beginPath(); ctx.moveTo(0,i*80+24); ctx.lineTo(W,i*80+6); ctx.stroke(); } ctx.fillStyle=g; circle(ctx,W*0.14,H*0.22,60); ctx.fill(); }
 
-  // Logo/photo (clipped circle)
+  // Logo/photo (cercle)
   if(state.logo){
     const img=await loadImage(state.logo);
     const r=120/Math.max(img.width,img.height); const w=img.width*r, h=img.height*r;
@@ -352,20 +362,20 @@ async function drawCard(canvas,isFront){
     ctx.strokeStyle='rgba(0,0,0,.15)'; ctx.lineWidth=4; ctx.beginPath(); ctx.arc(cx,cy,70,0,Math.PI*2); ctx.stroke();
   }
 
-  // Typography requested sizes
-  let sizeName = Math.max(14, Math.min(36, +state.sizeName||22));
-  let sizeSub  = Math.max(10, Math.min(22, +state.sizeSub||14));
-  let sizeBody = Math.max(10, Math.min(18, +state.sizeBody||12));
+  // Tailles voulues
+  let sizeName = Math.max(14, Math.min(36, Number(state.sizeName)||22));
+  let sizeSub  = Math.max(10, Math.min(22, Number(state.sizeSub)||14));
+  let sizeBody = Math.max(10, Math.min(18, Number(state.sizeBody)||12));
 
   const nameY=isFront? 120:140;
-  const maxNameW = 560; // zone texte sûre
+  const maxNameW = 560;
   const maxLineW = 600;
 
-  // Auto-fit if enabled
-  if(state.autofit && state.name){ sizeName = fitText(ctx, state.name, maxNameW, sizeName, 14); }
-  if(state.autofit && state.role){ sizeSub = Math.min(sizeSub, fitLine(ctx, state.role, maxLineW, sizeSub, 10, 600)); }
+  // Auto-fit
+  if(state.autofit && state.name){ sizeName = fitBold(ctx, state.name, maxNameW, sizeName, 14); }
+  if(state.autofit && state.role){ sizeSub = Math.min(sizeSub, fitRegular(ctx, state.role, maxLineW, sizeSub, 10, 600)); }
 
-  // Text blocks
+  // Textes principaux
   ctx.fillStyle='#0d0f16';
   ctx.font=`800 ${sizeName}px/1.15 Inter, system-ui, sans-serif`;
   if(state.name) ctx.fillText(state.name, 40, nameY);
@@ -375,10 +385,15 @@ async function drawCard(canvas,isFront){
 
   // Company / tagline
   const compSize = Math.max(12, Math.min(20, sizeSub));
-  ctx.font=`700 ${compSize}px/1.2 Inter, system-ui, sans-serif`;
-  if(state.company){ if(state.autofit){ const s=fitLine(ctx,state.company, maxLineW, compSize, 11, 700); ctx.font=`700 ${s}px/1.2 Inter, system-ui`; } ctx.fillText(state.company, 40, 40); }
-  ctx.font=`400 ${Math.max(11,sizeBody)}px/1.45 Inter, system-ui`; ctx.fillStyle='rgba(0,0,0,.78)';
-  if(state.tagline){ const s=state.autofit? fitLine(ctx,state.tagline,maxLineW,Math.max(11,sizeBody),10,400):Math.max(11,sizeBody); ctx.font=`400 ${s}px/1.45 Inter, system-ui`; ctx.fillText(state.tagline, 40, 62); }
+  let tmpSize = compSize;
+  if(state.company && state.autofit) tmpSize = fitRegular(ctx, state.company, maxLineW, compSize, 11, 700);
+  ctx.font=`700 ${tmpSize}px/1.2 Inter, system-ui, sans-serif`;
+  if(state.company) ctx.fillText(state.company, 40, 40);
+
+  let tagSize = Math.max(11,sizeBody);
+  if(state.tagline && state.autofit) tagSize = fitRegular(ctx, state.tagline, maxLineW, tagSize, 10, 400);
+  ctx.font=`400 ${tagSize}px/1.45 Inter, system-ui, sans-serif`; ctx.fillStyle='rgba(0,0,0,.78)';
+  if(state.tagline) ctx.fillText(state.tagline, 40, 62);
 
   // Contacts
   ctx.fillStyle='#0d0f16'; ctx.font=`400 ${sizeBody}px/1.45 Inter, system-ui`;
@@ -388,12 +403,11 @@ async function drawCard(canvas,isFront){
   if(state.website) lines.push('🌐 '+state.website);
   if(state.address) lines.push('📍 '+state.address);
   let y=nameY + sizeName + sizeSub + 14;
-  // Si trop de lignes, on réduit automatiquement la taille du corps
   if(state.autofit && y + lines.length*(sizeBody+6) > H-40){
     const avail = H-40 - y; sizeBody = Math.max(10, Math.floor(avail/Math.max(1,lines.length) - 6));
     ctx.font=`400 ${sizeBody}px/1.45 Inter, system-ui`;
   }
-  lines.forEach(l=>{ // et on coupe les lignes trop longues
+  lines.forEach(l=>{
     let text=l; while(ctx.measureText(text).width>maxLineW && text.length>3){ text=text.slice(0,-1); }
     ctx.fillText(text, 40, y); y+= (sizeBody+6);
   });
@@ -454,7 +468,7 @@ async function exportPDF({clean=false}={}){
   pdf.addImage(b,'PNG',0,0,CANVAS_W,CANVAS_H);
   const blob=pdf.output('blob'); saveAs(blob, clean?'carte_HD.pdf':'carte_filigranée.pdf');
 }
-function canvasToDataURL(c){ return new Promise(res=>res(c.toDataURL('image/png',0.95))); }
+function canvasToDataURL(c){ return c.toDataURL('image/png',0.95); }
 async function withWatermark(srcCanvas, mark){
   if(!mark) return srcCanvas;
   const c=document.createElement('canvas'); c.width=srcCanvas.width; c.height=srcCanvas.height;
@@ -463,31 +477,23 @@ async function withWatermark(srcCanvas, mark){
   const tw=ctx.measureText(text).width; ctx.fillText(text, c.width - tw - pad, c.height - 24);
   return c;
 }
-$('#dlMarked').onclick = ()=> exportPNG({clean:false});
-$('#dlMarkedPdf').onclick = ()=> exportPDF({clean:false});
-$('#dlClean').onclick = async ()=>{
+$('#dlMarked').addEventListener('click', ()=> exportPNG({clean:false}));
+$('#dlMarkedPdf').addEventListener('click', ()=> exportPDF({clean:false}));
+$('#dlClean').addEventListener('click', async ()=>{
   const code = ($('#proCode').value||'').trim().toUpperCase();
   if(code==='CREATIVE'){ await exportPNG({clean:true}); await exportPDF({clean:true}); toast('Export propre en cours…'); }
   else toast('Code invalide : export propre refusé.');
-};
+});
 
 /* ====== Controls ====== */
-$('#refresh').onclick = ()=> drawAll();
-$('#swap').onclick = ()=>{ const x=state.c1; state.c1=state.c2; state.c2=x; $('#c1').value=state.c1; $('#c2').value=state.c2; save(); drawAll(); };
+$('#refresh').addEventListener('click', ()=> drawAll());
+$('#swap').addEventListener('click', ()=>{ const x=state.c1; state.c1=state.c2; state.c2=x; $('#c1').value=state.c1; $('#c2').value=state.c2; save(); drawAll(); });
 
-/* ====== Template preview sync ====== */
-const tplGrid=$('#tplGrid');
-function refreshTplBorders(){
-  [...tplGrid.children].forEach(x=>x.classList.toggle('sel', true));
-}
+/* ====== Live schedule ====== */
 let timer=null; function schedule(){ clearTimeout(timer); timer=setTimeout(drawAll,120); }
 
-/* initial render */
-goto(state.step);
+/* First render */
 drawAll();
-
-/* Utils */
-function fileToDataURL(f){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result); r.onerror=rej; r.readAsDataURL(f); }); }
 })();
 </script>
 </body>
