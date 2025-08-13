@@ -3,69 +3,64 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
-<title>Générateur de Cartes de Visite — CRÉATIVE ENTREPRISE</title>
-<meta name="theme-color" content="#0b0f1e">
+<title>Générateur de Carte de Visite — par Martial H</title>
+<meta name="theme-color" content="#0b0c12">
 <style>
   :root{
-    --bg:#0b0f1e; --panel:#0e1431; --glass1:rgba(255,255,255,.06); --glass2:rgba(255,255,255,.03);
-    --line:#1b2458; --txt:#eaf2ff; --muted:#a6b4ff; --acc1:#00e5ff; --acc2:#7aa2ff; --ok:#2fe7a3; --ko:#ff6b6b;
+    --bg:#0b0c12; --panel:#10131e; --glass1:rgba(255,255,255,.06); --glass2:rgba(255,255,255,.03);
+    --line:#1e2232; --txt:#f3f6ff; --muted:#cfd6ff; --orange:#ff8a00; --orange2:#ffb45a; --ok:#2fe7a3; --ko:#ff6b6b;
   }
   *{box-sizing:border-box}
   html,body{height:100%}
   body{
-    margin:0; color:var(--txt); font-family:system-ui,Inter,Segoe UI,Roboto,Arial,sans-serif;
+    margin:0;color:var(--txt);font-family:system-ui,Inter,Segoe UI,Roboto,Arial,sans-serif;
     background:
-      radial-gradient(1200px 800px at 80% -10%, #1a2258 0, transparent 60%),
-      radial-gradient(900px 600px at 0% 110%, #311c5e 0, transparent 60%),
-      linear-gradient(180deg,#0c1128,#070a19), var(--bg);
+      radial-gradient(1200px 800px at 80% -10%, #171c34 0, transparent 60%),
+      radial-gradient(900px 600px at 0% 110%, #1b132a 0, transparent 60%),
+      linear-gradient(180deg,#0b0c12,#090a10);
   }
   header{
-    position:sticky;top:0;z-index:20;
-    background:linear-gradient(180deg,rgba(10,14,36,.9),rgba(9,12,28,.7));
-    -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line);
+    position:sticky;top:0;z-index:30;
+    background:linear-gradient(180deg,rgba(12,14,22,.9),rgba(10,12,18,.75));backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line)
   }
-  .head{max-width:1150px;margin:0 auto;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:10px}
-  .brand{display:flex;align-items:center;gap:12px}
-  .logo{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--acc1),var(--acc2));box-shadow:0 8px 24px rgba(122,162,255,.35), inset 0 0 14px rgba(255,255,255,.2)}
+  .head{max-width:1180px;margin:0 auto;padding:10px 12px;display:flex;align-items:center;gap:10px;justify-content:space-between}
+  .brand{display:flex;gap:12px;align-items:center}
+  .logo{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--orange),var(--orange2));
+    box-shadow:0 10px 28px rgba(255,138,0,.35), inset 0 0 16px rgba(255,255,255,.2)}
   .title{font-weight:900;letter-spacing:.02em}
   .subtitle{color:var(--muted);font-size:.9rem}
-  .status{border:1px solid var(--line);border-radius:999px;padding:.4rem .75rem;background:linear-gradient(180deg,rgba(25,31,84,.9),rgba(16,18,48,.9));font-weight:800}
+  .pill{border:1px solid var(--line);border-radius:999px;padding:.35rem .7rem;background:linear-gradient(180deg,var(--glass1),var(--glass2));font-weight:800}
 
-  .wrap{max-width:1150px;margin:10px auto 90px;padding:0 12px}
-  .app{display:grid;grid-template-columns:1fr;gap:12px}
-  @media(min-width:980px){ .app{grid-template-columns:360px 1fr} }
-  aside,section{border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,var(--glass1),var(--glass2));-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);padding:12px}
+  .wrap{max-width:1180px;margin:10px auto 90px;padding:0 12px}
+  .wizard{border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,var(--glass1),var(--glass2));backdrop-filter:blur(10px);padding:12px}
+  .steps{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .step{display:flex;align-items:center;gap:8px;padding:.45rem .65rem;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.05);font-size:.92rem}
+  .step.active{outline:2px solid rgba(255,138,0,.65)}
   h2{margin:.3rem 0 .5rem}
   .muted{color:var(--muted)}
   .row{display:flex;gap:8px;flex-wrap:wrap}
   .row>*{flex:1}
-  input[type=text],input[type=color],input[type=number],textarea,select{
-    width:100%;padding:.7rem .8rem;border:1px solid #2a3688;border-radius:10px;background:#0a0f26;color:#eaf2ff
+  input[type=text],input[type=url],input[type=color],input[type=number],textarea,select{
+    width:100%;padding:.75rem .8rem;border:1px solid #2a2f44;border-radius:10px;background:#0d111c;color:#f3f6ff
   }
   input[type=file]{width:100%}
-  .btn{appearance:none;border:1px solid var(--line);border-radius:10px;padding:.7rem .9rem;font-weight:800;color:#eaf2ff;background:linear-gradient(180deg,rgba(26,32,90,.95),rgba(12,16,40,.95));cursor:pointer}
-  .btn.primary{background:linear-gradient(135deg,var(--acc1),var(--acc2));color:#07122a;border-color:transparent}
+  .btn{appearance:none;border:1px solid var(--line);border-radius:10px;padding:.7rem .95rem;font-weight:800;color:#f3f6ff;background:linear-gradient(180deg,rgba(26,28,40,.95),rgba(14,16,26,.95));cursor:pointer}
+  .btn.primary{color:#0a0c12;border-color:transparent;background:linear-gradient(135deg,rgba(255,138,0,.85),rgba(255,180,90,.85))}
   .btn.ghost{background:transparent}
-  .pill{padding:.35rem .55rem;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.06);font-variant-numeric:tabular-nums}
-
+  .notice{border:1px dashed #343a55;border-radius:12px;padding:10px;background:rgba(255,255,255,.03)}
+  .grid{display:grid;grid-template-columns:1fr;gap:10px}
+  @media(min-width:900px){ .grid{grid-template-columns:1fr 1fr} }
   .templates{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
-  .tpl{border:1px solid var(--line);border-radius:10px;cursor:pointer;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02))}
-  .tpl canvas{display:block;width:100%;height:auto}
-  .tpl.sel{outline:2px solid #2b3aa8}
-
-  .stage{display:grid;grid-template-columns:1fr;gap:10px}
-  @media(min-width:780px){ .stage{grid-template-columns:1fr 1fr} }
-  .card{border:1px solid var(--line);border-radius:12px;padding:10px;background:linear-gradient(180deg,var(--glass1),var(--glass2))}
-  .canvasWrap{display:grid;place-items:center;background:#0b0f26;border:1px dashed #2a3688;border-radius:12px;padding:8px}
-  canvas#front, canvas#back{max-width:100%;background:#fff;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
-  .tabs{display:flex;gap:8px;flex-wrap:wrap}
-  .hint{font-size:.92rem;color:var(--muted)}
-  .ok{color:var(--ok)} .ko{color:var(--ko)}
-
-  footer{position:fixed;left:0;right:0;bottom:0;z-index:5;display:flex;justify-content:center}
-  .bar{max-width:1150px;margin:0 auto 10px;background:linear-gradient(180deg,var(--glass1),var(--glass2));border:1px solid var(--line);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:999px;padding:8px 10px;display:flex;gap:8px;align-items:center}
+  .tpl{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.02));cursor:pointer}
+  .tpl.sel{outline:2px solid rgba(255,138,0,.7)}
+  .canvasWrap{display:grid;place-items:center;background:#0c0f16;border:1px dashed #2a2f44;border-radius:12px;padding:8px}
+  canvas{max-width:100%;background:#fff;border-radius:10px;box-shadow:0 10px 28px rgba(0,0,0,.35)}
+  .footerBar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;justify-content:center}
+  .bar{max-width:1180px;margin:0 auto 10px;padding:8px 10px;border:1px solid var(--line);border-radius:999px;background:linear-gradient(180deg,var(--glass1),var(--glass2));backdrop-filter:blur(10px);display:flex;gap:8px;align-items:center}
   .grow{flex:1}
+  .ok{color:var(--ok)} .ko{color:var(--ko)}
+  .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:80px;padding:.6rem .9rem;border:1px solid var(--line);border-radius:10px;background:linear-gradient(180deg,var(--glass1),var(--glass2));z-index:50}
 </style>
 </head>
 <body>
@@ -75,52 +70,21 @@
       <div class="logo" aria-hidden="true"></div>
       <div>
         <div class="title">Générateur de carte de visite</div>
-        <div class="subtitle">Branding pro • 100% local • Export HD</div>
+        <div class="subtitle">Bienvenue 🤗 — créé par <b>Martial H</b>, gratuit et 100% local</div>
       </div>
     </div>
-    <div class="status" id="status">Prêt ✅</div>
+    <div class="pill" id="status">Étape 1/7</div>
   </div>
 </header>
 
 <div class="wrap">
-  <div class="app">
-    <!-- Panneau gauche : Infos & Style -->
-    <aside>
-      <h2>1) Informations</h2>
-      <div class="row">
-        <label>Nom complet<input id="name" type="text" placeholder="Ex: MARTIAL H."></label>
-        <label>Poste / Fonction<input id="role" type="text" placeholder="Ex: CEO / Développeur"></label>
-      </div>
-      <div class="row">
-        <label>Entreprise (optionnel)<input id="company" type="text" placeholder="Nom de l'entreprise"></label>
-        <label>Slogan (optionnel)<input id="tagline" type="text" placeholder="Ex: We build the future"></label>
-      </div>
-      <div class="row">
-        <label>Téléphone(s) (séparés par ;)<input id="phones" type="text" placeholder="+229 … ; +33 …"></label>
-      </div>
-      <div class="row">
-        <label>Email(s) (séparés par ;)<input id="emails" type="text" placeholder="exemple@domaine.com"></label>
-      </div>
-      <div class="row">
-        <label>Site web<input id="website" type="text" placeholder="https://…"></label>
-        <label>Adresse<input id="address" type="text" placeholder="Adresse complète (optionnel)"></label>
-      </div>
-      <div class="row">
-        <label>Réseaux (clé:valeur; …)
-          <input id="socials" type="text" placeholder="whatsapp:+229…; facebook:@page; instagram:@compte">
-        </label>
-      </div>
-      <div class="row">
-        <label>QR Code (URL ou vCard automatique)
-          <input id="qr" type="text" placeholder="https://site.com ou laisser vide">
-        </label>
-      </div>
-      <div class="row">
-        <label>Logo / Photo<input id="logo" type="file" accept="image/*"></label>
-        <label>Image de fond (optionnel)<input id="bgimg" type="file" accept="image/*"></label>
-      </div>
+  <div class="wizard">
+    <div class="steps" id="steps"></div>
 
-      <h2>2) Style</h2>
+    <!-- ÉTAPE 1 : Modèle & Couleurs -->
+    <section data-step="1">
+      <h2>1) Modèle & couleurs</h2>
+      <p class="muted">Aperçus neutres (sans infos perso). Thème noir/blanc avec accents orange “glass”.</p>
       <div class="row">
         <label>Modèle
           <select id="template">
@@ -132,74 +96,123 @@
             <option value="luxe">Luxe sombre</option>
           </select>
         </label>
-        <label>Couleur A<input id="c1" type="color" value="#6e35ff"></label>
-        <label>Couleur B<input id="c2" type="color" value="#00e5ff"></label>
+        <label>Couleur accent A<input id="c1" type="color" value="#ff8a00"></label>
+        <label>Couleur accent B<input id="c2" type="color" value="#ffb45a"></label>
       </div>
-      <div class="row">
-        <label>Police (titres)
-          <select id="fontH">
-            <option value="600 19px/1.1 Poppins, Inter, system-ui, sans-serif">Poppins / Bold</option>
-            <option value="800 20px/1.1 Outfit, Inter, system-ui, sans-serif">Outfit / ExtraBold</option>
-            <option value="700 19px/1.1 Montserrat, Inter, system-ui, sans-serif">Montserrat / Bold</option>
-            <option value="900 20px/1.1 Bebas Neue, Inter, system-ui, sans-serif">Bebas Neue</option>
-          </select>
-        </label>
-        <label>Police (texte)
-          <select id="fontB">
-            <option value="400 12px/1.45 Inter, system-ui, sans-serif">Inter</option>
-            <option value="400 12px/1.45 Roboto, system-ui, sans-serif">Roboto</option>
-            <option value="400 12px/1.45 Manrope, system-ui, sans-serif">Manrope</option>
-            <option value="400 12px/1.45 Nunito Sans, system-ui, sans-serif">Nunito Sans</option>
-          </select>
-        </label>
-      </div>
-      <div class="row">
-        <button class="btn" id="reset">Réinitialiser</button>
-        <button class="btn primary" id="refresh">Mettre à jour l’aperçu</button>
-      </div>
-
-      <h2>3) Modèles (aperçu)</h2>
       <div class="templates" id="tplGrid"></div>
-      <div class="hint">Astuce : charge un logo et une image de fond pour des résultats uniques. Tout se passe en local.</div>
-    </aside>
+    </section>
 
-    <!-- Panneau droit : Aperçu & Export -->
-    <section>
-      <div class="tabs">
-        <span class="pill">Taille carte : 85 × 55 mm — export 300 DPI</span>
-        <span class="pill" id="info">Recto/Verso éditables • QR code optionnel</span>
+    <!-- ÉTAPE 2 : Identité -->
+    <section data-step="2" hidden>
+      <h2>2) Identité</h2>
+      <div class="row">
+        <label>Nom complet<input id="name" type="text" placeholder="Nom Prénom"></label>
+        <label>Poste / Fonction<input id="role" type="text" placeholder="Poste"></label>
       </div>
-
-      <div class="stage">
-        <div class="card">
-          <div class="row" style="align-items:center;justify-content:space-between">
-            <h2>Recto</h2>
-            <button class="btn ghost" id="swap">↔️ Inverser couleurs</button>
+      <div class="row">
+        <label>Entreprise<input id="company" type="text" placeholder="Entreprise (optionnel)"></label>
+        <label>Slogan<input id="tagline" type="text" placeholder="Phrase d’accroche (optionnel)"></label>
+      </div>
+      <div class="row notice">
+        <div>
+          <b>Taille des textes (aperçu & export)</b>
+          <div class="row" style="margin-top:6px">
+            <label>Nom (px) <input id="sizeName" type="number" min="14" max="36" value="22"></label>
+            <label>Sous‑titre (px) <input id="sizeSub" type="number" min="10" max="22" value="14"></label>
+            <label>Corps (px) <input id="sizeBody" type="number" min="10" max="18" value="12"></label>
           </div>
-          <div class="canvasWrap">
-            <canvas id="front" width="1005" height="650"></canvas>
-          </div>
+          <label style="display:flex;gap:8px;align-items:center;margin-top:6px">
+            <input id="autofit" type="checkbox" checked>
+            <span>Auto‑ajuster les textes pour éviter tout dépassement</span>
+          </label>
         </div>
+      </div>
+    </section>
 
-        <div class="card">
-          <h2>Verso</h2>
-          <div class="canvasWrap">
-            <canvas id="back" width="1005" height="650"></canvas>
-          </div>
+    <!-- ÉTAPE 3 : Contacts -->
+    <section data-step="3" hidden>
+      <h2>3) Contacts</h2>
+      <div class="row">
+        <label>Téléphones (séparés par ;)<input id="phones" type="text" placeholder="+229… ; +33…"></label>
+      </div>
+      <div class="row">
+        <label>Emails (séparés par ;)<input id="emails" type="text" placeholder="exemple@domaine.com"></label>
+      </div>
+      <div class="row">
+        <label>Site web<input id="website" type="url" placeholder="https://site.com"></label>
+        <label>Adresse<input id="address" type="text" placeholder="Adresse complète (optionnel)"></label>
+      </div>
+    </section>
+
+    <!-- ÉTAPE 4 : Réseaux & QR -->
+    <section data-step="4" hidden>
+      <h2>4) Réseaux & QR</h2>
+      <div class="row">
+        <label>Réseaux (clé:valeur; …)
+          <input id="socials" type="text" placeholder="whatsapp:+229…; facebook:@page; instagram:@compte">
+        </label>
+      </div>
+      <div class="row">
+        <label>QR Code (URL ou laisser vide)
+          <input id="qr" type="url" placeholder="https://votre‑lien.com">
+        </label>
+      </div>
+      <p class="muted">Astuce : si tu laisses vide, aucun QR ne sera ajouté.</p>
+    </section>
+
+    <!-- ÉTAPE 5 : Visuels -->
+    <section data-step="5" hidden>
+      <h2>5) Visuels</h2>
+      <div class="row">
+        <label>Logo / Photo<input id="logo" type="file" accept="image/*"></label>
+        <label>Image de fond (optionnel)<input id="bgimg" type="file" accept="image/*"></label>
+      </div>
+      <div class="notice muted">Les images restent sur ton appareil. Rien n’est envoyé.</div>
+    </section>
+
+    <!-- ÉTAPE 6 : Aperçu -->
+    <section data-step="6" hidden>
+      <h2>6) Aperçu (recto & verso)</h2>
+      <div class="grid">
+        <div><div class="canvasWrap"><canvas id="front" width="1005" height="650"></canvas></div></div>
+        <div><div class="canvasWrap"><canvas id="back" width="1005" height="650"></canvas></div></div>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <button class="btn" id="refresh">Mettre à jour l’aperçu</button>
+        <button class="btn ghost" id="swap">↔️ Inverser les couleurs</button>
+      </div>
+    </section>
+
+    <!-- ÉTAPE 7 : Téléchargement -->
+    <section data-step="7" hidden>
+      <h2>7) Téléchargement</h2>
+      <p class="muted">Par défaut un petit filigrane “CRÉATIVE ENTREPRISE — signe” est ajouté.</p>
+      <div class="row">
+        <button class="btn" id="dlMarked">PNG HD (filigrané)</button>
+        <button class="btn" id="dlMarkedPdf">PDF (filigrané)</button>
+      </div>
+      <div class="row notice">
+        <div class="row">
+          <label>Code pour export propre (sans filigrane)
+            <input id="proCode" type="text" placeholder="Entrer le code ici">
+          </label>
+          <button class="btn primary" id="dlClean">Exporter SANS filigrane</button>
         </div>
+        <small class="muted">Code requis : <b>CREATIVE</b> (insensible à la casse).</small>
       </div>
     </section>
   </div>
 </div>
 
-<footer>
+<div class="footerBar">
   <div class="bar">
-    <div class="grow hint">Télécharger <b>gratuit</b> (filigrane discret) ou entrer le code <b>CREATIVE</b> pour un export <b>sans filigrane</b>.</div>
-    <button class="btn" id="dlMarked">PNG HD (filigrané)</button>
-    <button class="btn" id="dlMarkedPdf">PDF (filigrané)</button>
-    <button class="btn primary" id="dlClean">Export HD sans filigrane</button>
+    <button class="btn" id="prev">← Retour</button>
+    <div class="grow" id="hint" style="text-align:center">Complète l’étape puis appuie sur <b>Suivant</b>.</div>
+    <button class="btn primary" id="next">Suivant →</button>
   </div>
-</footer>
+</div>
+
+<div id="toast" class="toast" hidden>Message</div>
 
 <!-- Libs -->
 <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
@@ -208,113 +221,129 @@
 
 <script>
 (()=>{'use strict';
-/* ====== Utils ====== */
+/* ====== Helpers ====== */
 const $=(s,r=document)=>r.querySelector(s);
-const statusEl=$('#status');
-const setStatus=t=>statusEl.textContent=t;
-const mmToPx=mm=>Math.round(mm*11.811); // 300 DPI -> 1mm ≈ 11.811px  (85x55mm -> 1004x649)
-const CANVAS_W=1005, CANVAS_H=650; // 85x55mm @300dpi arrondi
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const toast=(t)=>{ const el=$('#toast'); el.textContent=t; el.hidden=false; setTimeout(()=>el.hidden=true,1800); };
+const setStatus=t=> $('#status').textContent=t;
 
-const loadImage = src => new Promise((res,rej)=>{ const img=new Image(); img.onload=()=>res(img); img.onerror=rej; img.src=src; });
-const fileToDataURL = f => new Promise((res,rej)=>{ const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(f); });
+/* ====== State & persistence ====== */
+const CANVAS_W=1005, CANVAS_H=650;
+const state = JSON.parse(localStorage.getItem('card_state')||'{}');
+Object.assign(state,{
+  step: state.step||1,
+  template: state.template||'waves',
+  c1: state.c1||'#ff8a00',
+  c2: state.c2||'#ffb45a',
+  name: state.name||'',
+  role: state.role||'',
+  company: state.company||'',
+  tagline: state.tagline||'',
+  sizeName: +state.sizeName||22,
+  sizeSub: +state.sizeSub||14,
+  sizeBody: +state.sizeBody||12,
+  autofit: state.autofit!==false, // default ON
+  phones: state.phones||'',
+  emails: state.emails||'',
+  website: state.website||'',
+  address: state.address||'',
+  socials: state.socials||'',
+  qr: state.qr||'',
+  logo: state.logo||null,
+  bgimg: state.bgimg||null
+});
+const save=()=> localStorage.setItem('card_state', JSON.stringify(state));
 
-/* ====== State ====== */
-const state = {
-  name:'MARTIAL H.',
-  role:'CEO / Développeur',
-  company:'CRÉATIVE ENTREPRISE',
-  tagline:'Create. Build. Grow.',
-  phones:'+229 00 00 00 00',
-  emails:'contact@exemple.com',
-  website:'https://site.com',
-  address:'Cotonou, Bénin',
-  socials:'whatsapp:+22900000000; facebook:@creative; instagram:@brand',
-  qr:'',
-  c1:'#6e35ff', c2:'#00e5ff',
-  fontH:'800 20px/1.1 Outfit, Inter, system-ui, sans-serif',
-  fontB:'400 12px/1.45 Inter, system-ui, sans-serif',
-  template:'waves',
-  logo:null, bgimg:null
-};
+/* ====== Bind fields ====== */
+function bindText(id){ const el=$('#'+id); if(!el) return; el.value=(state[id]??''); el.addEventListener('input',()=>{ state[id]=el.value; save(); schedule(); }); }
+['template','name','role','company','tagline','phones','emails','website','address','socials','qr'].forEach(bindText);
+['c1','c2'].forEach(id=>{ const el=$('#'+id); el.value=state[id]; el.addEventListener('input',()=>{ state[id]=el.value; save(); schedule(); });});
+['sizeName','sizeSub','sizeBody'].forEach(id=>{ const el=$('#'+id); el.value=state[id]; el.addEventListener('input',()=>{ const v=Math.max(+el.min, Math.min(+el.max, +el.value||0)); state[id]=v; el.value=v; save(); schedule(); });});
+$('#autofit').checked = !!state.autofit;
+$('#autofit').addEventListener('change',()=>{ state.autofit=$('#autofit').checked; save(); schedule(); });
 
-/* ====== Bind inputs ====== */
-const fields=['name','role','company','tagline','phones','emails','website','address','socials','qr'];
-fields.forEach(id=>{ const el=$('#'+id); el.addEventListener('input',()=>{ state[id]=el.value; schedule(); }); el.value=state[id]; });
-['c1','c2','fontH','fontB','template'].forEach(id=>{ const el=$('#'+id); el.addEventListener('input',()=>{ state[id]=el.value; schedule(); }); el.value=state[id]; });
+$('#logo').addEventListener('change',async e=>{ const f=e.target.files[0]; if(!f) return; state.logo=await fileToDataURL(f); save(); schedule(); });
+$('#bgimg').addEventListener('change',async e=>{ const f=e.target.files[0]; if(!f) return; state.bgimg=await fileToDataURL(f); save(); schedule(); });
 
-$('#logo').addEventListener('change',async e=>{ const f=e.target.files[0]; if(!f) return; state.logo=await fileToDataURL(f); schedule(); });
-$('#bgimg').addEventListener('change',async e=>{ const f=e.target.files[0]; if(!f) return; state.bgimg=await fileToDataURL(f); schedule(); });
+/* ====== Steps UI ====== */
+const stepsMeta=['Modèle','Identité','Contacts','Réseaux & QR','Visuels','Aperçu','Téléchargement'];
+const stepsBox=$('#steps');
+stepsMeta.forEach((t,i)=>{ const b=document.createElement('div'); b.className='step'; b.dataset.i=i+1; b.innerHTML=`<b>${i+1}</b> ${t}`; b.onclick=()=>goto(i+1); stepsBox.appendChild(b); });
+function goto(n){
+  state.step=n; save();
+  $$('section[data-step]').forEach(s=> s.hidden = +s.dataset.step !== n);
+  $$('.step').forEach(s=> s.classList.toggle('active', +s.dataset.i===n));
+  $('#prev').disabled = n===1;
+  $('#next').textContent = n===7 ? 'Terminer' : 'Suivant →';
+  setStatus(`Étape ${n}/7`);
+  if(n===6) drawAll();
+}
+$('#prev').onclick = ()=>{ if(state.step>1) goto(state.step-1); };
+$('#next').onclick = ()=>{ if(state.step<7) goto(state.step+1); else toast('Tu peux télécharger maintenant.'); };
+goto(state.step);
 
-$('#refresh').onclick=()=> drawAll();
-$('#reset').onclick=()=>{ Object.assign(state,{...state,logo:null,bgimg:null}); fields.forEach(id=>$('#'+id).value=''); schedule(); };
-$('#swap').onclick=()=>{ const x=state.c1; state.c1=state.c2; state.c2=x; $('#c1').value=state.c1; $('#c2').value=state.c2; schedule(); };
-
-/* ====== Templates gallery ====== */
+/* ====== Templates preview (neutres) ====== */
 const tplGrid=$('#tplGrid'); const TPLS=['waves','diagonal','circles','ribbon','angles','luxe'];
 TPLS.forEach(t=>{
-  const c=document.createElement('canvas'); c.width=320; c.height=200;
-  const ctx=c.getContext('2d');
-  previewTemplate(ctx,t,'#6e35ff','#00e5ff');
-  const wrap=document.createElement('div'); wrap.className='tpl'+(t===state.template?' sel':''); wrap.appendChild(c); wrap.onclick=()=>{ state.template=t; $('#template').value=t; [...tplGrid.children].forEach(x=>x.classList.remove('sel')); wrap.classList.add('sel'); schedule(); };
+  const c=document.createElement('canvas'); c.width=320; c.height=200; const ctx=c.getContext('2d');
+  previewTemplate(ctx,t,state.c1,state.c2);
+  const wrap=document.createElement('div'); wrap.className='tpl'+(t===state.template?' sel':''); wrap.appendChild(c);
+  wrap.onclick=()=>{ state.template=t; $('#template').value=t; save(); [...tplGrid.children].forEach(x=>x.classList.remove('sel')); wrap.classList.add('sel'); schedule(); };
   tplGrid.appendChild(wrap);
 });
 function previewTemplate(ctx,t,c1,c2){
   const W=ctx.canvas.width,H=ctx.canvas.height; const g=ctx.createLinearGradient(0,0,W,H); g.addColorStop(0,c1); g.addColorStop(1,c2);
   ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
-  if(t==='waves'){
-    ctx.fillStyle=g; wave(ctx,0,H*0.55,W,H*0.65,28); ctx.fill();
-    ctx.fillStyle='rgba(0,0,0,.06)'; circle(ctx,W*0.8,H*0.4,55); ctx.fill();
-  }else if(t==='diagonal'){
-    ctx.fillStyle=g; poly(ctx,[0,H, W*0.65,0, W,0, W,H, 0,H]); ctx.fill();
-  }else if(t==='circles'){
-    ctx.fillStyle=g; circle(ctx,W*0.22,H*0.52,60); ctx.fill(); ctx.globalAlpha=.15; circle(ctx,W*0.78,H*0.4,70); ctx.fill(); ctx.globalAlpha=1;
-  }else if(t==='ribbon'){
-    ctx.fillStyle=g; poly(ctx,[0,H*0.65, W,H*0.35, W,H, 0,H]); ctx.fill();
-  }else if(t==='angles'){
-    ctx.fillStyle=g; poly(ctx,[0,0, W*0.72,0, W,H*0.38, W,H, 0,H, 0,0]); ctx.fill();
-  }else if(t==='luxe'){
-    ctx.fillStyle='#0b0f26'; ctx.fillRect(0,0,W,H); ctx.strokeStyle='rgba(255,255,255,.2)'; ctx.lineWidth=1.2; for(let i=0;i<6;i++){ ctx.beginPath(); ctx.moveTo(0,i*34+20); ctx.lineTo(W,i*34+10); ctx.stroke(); }
-    ctx.fillStyle=g; circle(ctx,W*0.15,H*0.25,36); ctx.fill();
-  }
+  if(t==='waves'){ ctx.fillStyle=g; wave(ctx,0,H*0.55,W,H*0.65,28); ctx.fill(); }
+  else if(t==='diagonal'){ ctx.fillStyle=g; poly(ctx,[0,H, W*0.65,0, W,0, W,H, 0,H]); ctx.fill(); }
+  else if(t==='circles'){ ctx.fillStyle=g; circle(ctx,W*0.22,H*0.52,60); ctx.fill(); ctx.globalAlpha=.15; circle(ctx,W*0.78,H*0.4,70); ctx.fill(); ctx.globalAlpha=1; }
+  else if(t==='ribbon'){ ctx.fillStyle=g; poly(ctx,[0,H*0.65, W,H*0.35, W,H, 0,H]); ctx.fill(); }
+  else if(t==='angles'){ ctx.fillStyle=g; poly(ctx,[0,0, W*0.72,0, W,H*0.38, W,H, 0,H, 0,0]); ctx.fill(); }
+  else if(t==='luxe'){ ctx.fillStyle='#0b0f26'; ctx.fillRect(0,0,W,H); ctx.strokeStyle='rgba(255,255,255,.2)'; for(let i=0;i<6;i++){ ctx.beginPath(); ctx.moveTo(0,i*34+20); ctx.lineTo(W,i*34+10); ctx.stroke(); } ctx.fillStyle=g; circle(ctx,W*0.15,H*0.25,36); ctx.fill(); }
   function circle(ctx,x,y,r){ ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); }
   function poly(ctx,pts){ ctx.beginPath(); ctx.moveTo(pts[0],pts[1]); for(let i=2;i<pts.length;i+=2) ctx.lineTo(pts[i],pts[i+1]); ctx.closePath(); }
   function wave(ctx,x0,y0,w,h,amp){ ctx.beginPath(); ctx.moveTo(0,H); ctx.lineTo(0,y0); for(let x=0;x<=W;x+=10){ const y=y0 + Math.sin((x/W)*Math.PI)*amp; ctx.lineTo(x,y); } ctx.lineTo(W,H); ctx.closePath(); }
 }
 
-/* ====== Drawing ====== */
+/* ====== Canvas drawing ====== */
 const front=$('#front'), back=$('#back');
-async function drawAll(){ setStatus('Génération…'); await Promise.all([drawCard(front,true), drawCard(back,false)]); setStatus('Prêt ✅'); }
+const fileToDataURL = f => new Promise((res,rej)=>{ const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(f); });
+const loadImage = src => new Promise((res,rej)=>{ const img=new Image(); img.onload=()=>res(img); img.onerror=rej; img.src=src; });
+
+function fitText(ctx, text, maxWidth, desiredPx, minPx){
+  let size=desiredPx;
+  ctx.font=`800 ${size}px/1.15 Inter, system-ui, sans-serif`;
+  while(size>minPx && ctx.measureText(text).width>maxWidth){ size-=1; ctx.font=`800 ${size}px/1.15 Inter, system-ui, sans-serif`; }
+  return size;
+}
+function fitLine(ctx, text, maxWidth, desiredPx, minPx, weight=400){
+  let size=desiredPx;
+  ctx.font=`${weight} ${size}px/1.45 Inter, system-ui, sans-serif`;
+  while(size>minPx && ctx.measureText(text).width>maxWidth){ size-=1; ctx.font=`${weight} ${size}px/1.45 Inter, system-ui, sans-serif`; }
+  return size;
+}
+
+async function drawAll(){ await Promise.all([drawCard(front,true), drawCard(back,false)]); }
 
 async function drawCard(canvas,isFront){
   const ctx=canvas.getContext('2d'); const W=canvas.width,H=canvas.height;
   ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
 
-  // Background image if any
-  if(state.bgimg){ const img=await loadImage(state.bgimg); const r=Math.max(W/img.width,H/img.height); const w=img.width*r,h=img.height*r; ctx.globalAlpha=0.2; ctx.drawImage(img,(W-w)/2,(H-h)/2,w,h); ctx.globalAlpha=1; }
+  // BG image (soft)
+  if(state.bgimg){ const img=await loadImage(state.bgimg); const r=Math.max(W/img.width,H/img.height); ctx.globalAlpha=.18; ctx.drawImage(img,(W-img.width*r)/2,(H-img.height*r)/2,img.width*r,img.height*r); ctx.globalAlpha=1; }
 
-  // Template shape
+  // Accent gradients
   const g=ctx.createLinearGradient(0,0,W,H); g.addColorStop(0,state.c1); g.addColorStop(1,state.c2);
   const g2=ctx.createLinearGradient(0,H,W,0); g2.addColorStop(0,state.c2); g2.addColorStop(1,state.c1);
 
-  if(state.template==='waves'){
-    ctx.fillStyle=g; wave(ctx,0,H*0.62,W,H*0.72,40); ctx.fill();
-    if(isFront){ ctx.globalAlpha=.08; circle(ctx,W*0.80,H*0.38,120); ctx.fill(); ctx.globalAlpha=1; }
-  } else if(state.template==='diagonal'){
-    ctx.fillStyle=g; poly(ctx,[0,H, W*0.62,0, W,0, W,H, 0,H]); ctx.fill();
-  } else if(state.template==='circles'){
-    ctx.fillStyle=g; circle(ctx,W*0.22,H*0.72,140); ctx.fill(); ctx.globalAlpha=.1; circle(ctx,W*0.78,H*0.32,160); ctx.fill(); ctx.globalAlpha=1;
-  } else if(state.template==='ribbon'){
-    ctx.fillStyle=g; poly(ctx,[0,H*0.68, W,H*0.36, W,H, 0,H]); ctx.fill();
-    ctx.fillStyle=g2; poly(ctx,[0,0, W*0.75,0, 0,H*0.28, 0,0]); ctx.fill();
-  } else if(state.template==='angles'){
-    ctx.fillStyle=g; poly(ctx,[0,0, W*0.74,0, W,H*0.38, W,H, 0,H, 0,0]); ctx.fill();
-  } else if(state.template==='luxe'){
-    ctx.fillStyle='#0b0f26'; ctx.fillRect(0,0,W,H);
-    ctx.strokeStyle='rgba(255,255,255,.16)'; ctx.lineWidth=1.4; for(let i=0;i<8;i++){ ctx.beginPath(); ctx.moveTo(0,i*80+24); ctx.lineTo(W,i*80+6); ctx.stroke(); }
-    ctx.fillStyle=g; circle(ctx,W*0.14,H*0.22,60); ctx.fill(); ctx.globalAlpha=.08; circle(ctx,W*0.86,H*0.78,120); ctx.fill(); ctx.globalAlpha=1;
-  }
+  if(state.template==='waves'){ ctx.fillStyle=g; wave(ctx,0,H*0.62,W,H*0.72,40); ctx.fill(); }
+  else if(state.template==='diagonal'){ ctx.fillStyle=g; poly(ctx,[0,H, W*0.62,0, W,0, W,H, 0,H]); ctx.fill(); }
+  else if(state.template==='circles'){ ctx.fillStyle=g; circle(ctx,W*0.22,H*0.72,140); ctx.fill(); ctx.globalAlpha=.1; circle(ctx,W*0.78,H*0.32,160); ctx.fill(); ctx.globalAlpha=1; }
+  else if(state.template==='ribbon'){ ctx.fillStyle=g; poly(ctx,[0,H*0.68, W,H*0.36, W,H, 0,H]); ctx.fill(); ctx.fillStyle=g2; poly(ctx,[0,0, W*0.75,0, 0,H*0.28, 0,0]); ctx.fill(); }
+  else if(state.template==='angles'){ ctx.fillStyle=g; poly(ctx,[0,0, W*0.74,0, W,H*0.38, W,H, 0,H, 0,0]); ctx.fill(); }
+  else if(state.template==='luxe'){ ctx.fillStyle='#0b0f26'; ctx.fillRect(0,0,W,H); ctx.strokeStyle='rgba(0,0,0,.16)'; for(let i=0;i<8;i++){ ctx.beginPath(); ctx.moveTo(0,i*80+24); ctx.lineTo(W,i*80+6); ctx.stroke(); } ctx.fillStyle=g; circle(ctx,W*0.14,H*0.22,60); ctx.fill(); }
 
-  // Logo/photo (cercle)
+  // Logo/photo (clipped circle)
   if(state.logo){
     const img=await loadImage(state.logo);
     const r=120/Math.max(img.width,img.height); const w=img.width*r, h=img.height*r;
@@ -323,50 +352,77 @@ async function drawCard(canvas,isFront){
     ctx.strokeStyle='rgba(0,0,0,.15)'; ctx.lineWidth=4; ctx.beginPath(); ctx.arc(cx,cy,70,0,Math.PI*2); ctx.stroke();
   }
 
-  // Text styles
-  ctx.fillStyle='#0c0f1a';
-  ctx.font=state.fontH; const nameY=isFront? 120:140;
-  ctx.textBaseline='top';
-  ctx.fillText(state.name||'', 40, nameY);
-  ctx.font='600 14px/1.1 Inter, system-ui, sans-serif';
-  if(state.role) ctx.fillText(state.role, 40, nameY+28);
+  // Typography requested sizes
+  let sizeName = Math.max(14, Math.min(36, +state.sizeName||22));
+  let sizeSub  = Math.max(10, Math.min(22, +state.sizeSub||14));
+  let sizeBody = Math.max(10, Math.min(18, +state.sizeBody||12));
 
-  // Company + tagline
-  ctx.font='700 16px/1.2 Inter,system-ui,sans-serif'; if(state.company) ctx.fillText(state.company, 40, 40);
-  ctx.font='400 12px/1.45 Inter,system-ui,sans-serif'; ctx.fillStyle='rgba(0,0,0,.75)'; if(state.tagline) ctx.fillText(state.tagline, 40, 62);
+  const nameY=isFront? 120:140;
+  const maxNameW = 560; // zone texte sûre
+  const maxLineW = 600;
 
-  // Contact block (left)
-  ctx.fillStyle='#0c0f1a'; ctx.font=state.fontB;
+  // Auto-fit if enabled
+  if(state.autofit && state.name){ sizeName = fitText(ctx, state.name, maxNameW, sizeName, 14); }
+  if(state.autofit && state.role){ sizeSub = Math.min(sizeSub, fitLine(ctx, state.role, maxLineW, sizeSub, 10, 600)); }
+
+  // Text blocks
+  ctx.fillStyle='#0d0f16';
+  ctx.font=`800 ${sizeName}px/1.15 Inter, system-ui, sans-serif`;
+  if(state.name) ctx.fillText(state.name, 40, nameY);
+
+  ctx.font=`600 ${sizeSub}px/1.15 Inter, system-ui, sans-serif`;
+  if(state.role) ctx.fillText(state.role, 40, nameY + sizeName + 6);
+
+  // Company / tagline
+  const compSize = Math.max(12, Math.min(20, sizeSub));
+  ctx.font=`700 ${compSize}px/1.2 Inter, system-ui, sans-serif`;
+  if(state.company){ if(state.autofit){ const s=fitLine(ctx,state.company, maxLineW, compSize, 11, 700); ctx.font=`700 ${s}px/1.2 Inter, system-ui`; } ctx.fillText(state.company, 40, 40); }
+  ctx.font=`400 ${Math.max(11,sizeBody)}px/1.45 Inter, system-ui`; ctx.fillStyle='rgba(0,0,0,.78)';
+  if(state.tagline){ const s=state.autofit? fitLine(ctx,state.tagline,maxLineW,Math.max(11,sizeBody),10,400):Math.max(11,sizeBody); ctx.font=`400 ${s}px/1.45 Inter, system-ui`; ctx.fillText(state.tagline, 40, 62); }
+
+  // Contacts
+  ctx.fillStyle='#0d0f16'; ctx.font=`400 ${sizeBody}px/1.45 Inter, system-ui`;
   const lines=[];
   if(state.phones) state.phones.split(';').map(s=>s.trim()).filter(Boolean).forEach(t=>lines.push('📞 '+t));
   if(state.emails) state.emails.split(';').map(s=>s.trim()).filter(Boolean).forEach(t=>lines.push('✉️ '+t));
   if(state.website) lines.push('🌐 '+state.website);
   if(state.address) lines.push('📍 '+state.address);
-  let y=nameY+60; lines.forEach(l=>{ ctx.fillText(l, 40, y); y+=18; });
+  let y=nameY + sizeName + sizeSub + 14;
+  // Si trop de lignes, on réduit automatiquement la taille du corps
+  if(state.autofit && y + lines.length*(sizeBody+6) > H-40){
+    const avail = H-40 - y; sizeBody = Math.max(10, Math.floor(avail/Math.max(1,lines.length) - 6));
+    ctx.font=`400 ${sizeBody}px/1.45 Inter, system-ui`;
+  }
+  lines.forEach(l=>{ // et on coupe les lignes trop longues
+    let text=l; while(ctx.measureText(text).width>maxLineW && text.length>3){ text=text.slice(0,-1); }
+    ctx.fillText(text, 40, y); y+= (sizeBody+6);
+  });
 
-  // Socials (right column small)
+  // Socials
   const socials=parseSocials(state.socials);
   if(socials.length){
-    let sy=nameY+60, sx=W-360;
-    ctx.textAlign='left'; ctx.fillStyle='#0c0f1a'; ctx.font=state.fontB;
-    socials.forEach(([k,v])=>{ ctx.fillText(iconFor(k)+' '+v, sx, sy); sy+=18; });
+    let sy=nameY + sizeName + sizeSub + 14, sx=W-360;
+    ctx.textAlign='left'; ctx.fillStyle='#0d0f16'; ctx.font=`400 ${sizeBody}px/1.4 Inter, system-ui`;
+    socials.forEach(([k,v])=>{
+      let text=iconFor(k)+' '+v;
+      while(ctx.measureText(text).width>300 && text.length>3){ text=text.slice(0,-1); }
+      ctx.fillText(text, sx, sy); sy+= (sizeBody+6);
+    });
   }
 
-  // QR code (back side by default, or front if provided + template supports)
+  // QR
   if(state.qr){
     const tmp=document.createElement('canvas');
-    QRCode.toCanvas(tmp, state.qr, {margin:1,width:180,color:{dark:'#000',light:'#fff'}}, (e)=>{});
-    const qx=isFront? (W-240) : (W-240), qy=isFront? (H-240) : (H-240);
+    QRCode.toCanvas(tmp, state.qr, {margin:1,width:180,color:{dark:'#000',light:'#fff'}}, ()=>{});
+    const qx=W-240, qy=H-240;
     ctx.drawImage(tmp,qx,qy,180,180);
-    ctx.font='400 11px/1 Inter,system-ui'; ctx.fillStyle='rgba(0,0,0,.7)'; ctx.fillText('Scan me', qx+54, qy+186);
+    ctx.font=`400 ${Math.max(10,sizeBody-1)}px/1 Inter,system-ui`; ctx.fillStyle='rgba(0,0,0,.7)'; ctx.fillText('Scan me', qx+54, qy+186);
   }
 
-  // Helpers
+  // helpers
   function circle(ctx,x,y,r){ ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); }
   function poly(ctx,pts){ ctx.beginPath(); ctx.moveTo(pts[0],pts[1]); for(let i=2;i<pts.length;i+=2) ctx.lineTo(pts[i],pts[i+1]); ctx.closePath(); }
   function wave(ctx,x0,y0,w,h,amp){ ctx.beginPath(); ctx.moveTo(0,H); ctx.lineTo(0,y0); for(let x=0;x<=W;x+=8){ const y=y0 + Math.sin((x/W)*Math.PI)*amp; ctx.lineTo(x,y); } ctx.lineTo(W,H); ctx.closePath(); }
-
-  return canvas;
 }
 
 function parseSocials(s){
@@ -382,16 +438,15 @@ function iconFor(k){
 /* ====== Export ====== */
 async function exportPNG({clean=false}={}){
   await drawAll();
-  const f=front, b=back;
-  const f2 = await withWatermark(f, clean? null : 'CRÉATIVE ENTREPRISE');
-  const b2 = await withWatermark(b, clean? null : 'CRÉATIVE ENTREPRISE');
-  f2.toBlob(blob=>saveAs(blob,'carte_recto.png'),'image/png',0.95);
-  b2.toBlob(blob=>saveAs(blob,'carte_verso.png'),'image/png',0.95);
+  const f=await withWatermark(front, clean?null:'CRÉATIVE ENTREPRISE');
+  const b=await withWatermark(back, clean?null:'CRÉATIVE ENTREPRISE');
+  f.toBlob(blob=>saveAs(blob, clean?'carte_recto_HD.png':'carte_recto_filigranée.png'),'image/png',0.95);
+  b.toBlob(blob=>saveAs(blob, clean?'carte_verso_HD.png':'carte_verso_filigranée.png'),'image/png',0.95);
 }
 async function exportPDF({clean=false}={}){
   await drawAll();
   const { jsPDF }=window.jspdf;
-  const pdf=new jsPDF({unit:'pt',format:[CANVAS_W,CANVAS_H]}); // une page = recto
+  const pdf=new jsPDF({unit:'pt',format:[CANVAS_W,CANVAS_H]});
   const f=await canvasToDataURL(await withWatermark(front, clean?null:'CRÉATIVE ENTREPRISE'));
   pdf.addImage(f,'PNG',0,0,CANVAS_W,CANVAS_H);
   pdf.addPage([CANVAS_W,CANVAS_H]);
@@ -408,21 +463,31 @@ async function withWatermark(srcCanvas, mark){
   const tw=ctx.measureText(text).width; ctx.fillText(text, c.width - tw - pad, c.height - 24);
   return c;
 }
-
-/* ====== Download buttons ====== */
 $('#dlMarked').onclick = ()=> exportPNG({clean:false});
 $('#dlMarkedPdf').onclick = ()=> exportPDF({clean:false});
 $('#dlClean').onclick = async ()=>{
-  const code = prompt('Entrez le code pour un export SANS filigrane :');
-  if((code||'').trim().toUpperCase()==='CREATIVE'){ setStatus('Export HD sans filigrane…'); await exportPNG({clean:true}); await exportPDF({clean:true}); setStatus('Prêt ✅'); }
-  else{ alert('Code invalide. Export avec filigrane proposé.'); await exportPNG({clean:false}); }
+  const code = ($('#proCode').value||'').trim().toUpperCase();
+  if(code==='CREATIVE'){ await exportPNG({clean:true}); await exportPDF({clean:true}); toast('Export propre en cours…'); }
+  else toast('Code invalide : export propre refusé.');
 };
 
-/* ====== Live render throttle ====== */
-let timer=null; function schedule(){ clearTimeout(timer); timer=setTimeout(drawAll, 140); }
+/* ====== Controls ====== */
+$('#refresh').onclick = ()=> drawAll();
+$('#swap').onclick = ()=>{ const x=state.c1; state.c1=state.c2; state.c2=x; $('#c1').value=state.c1; $('#c2').value=state.c2; save(); drawAll(); };
 
-/* ====== First paint ====== */
+/* ====== Template preview sync ====== */
+const tplGrid=$('#tplGrid');
+function refreshTplBorders(){
+  [...tplGrid.children].forEach(x=>x.classList.toggle('sel', true));
+}
+let timer=null; function schedule(){ clearTimeout(timer); timer=setTimeout(drawAll,120); }
+
+/* initial render */
+goto(state.step);
 drawAll();
+
+/* Utils */
+function fileToDataURL(f){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result); r.onerror=rej; r.readAsDataURL(f); }); }
 })();
 </script>
 </body>
