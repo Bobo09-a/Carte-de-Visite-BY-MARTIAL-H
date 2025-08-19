@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GlassTok — Réseau social vidéo</title>
+  <meta name="description" content="Prototype d'un réseau social vidéo type TikTok (feed vertical, likes, commentaires).">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <header class="app-header glass">
+    <div class="brand">
+      <svg width="26" height="26" viewBox="0 0 100 100" aria-hidden="true">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#7dd3fc"/>
+            <stop offset="1" stop-color="#a78bfa"/>
+          </linearGradient>
+        </defs>
+        <circle cx="50" cy="50" r="48" fill="url(#g)" opacity="0.85"/>
+        <path d="M30 60c0-15 12-27 27-27h7v12h-7c-8 0-15 7-15 15v17H30V60z" fill="white"/>
+      </svg>
+      <span>GlassTok</span>
+    </div>
+    <div class="searchbar">
+      <input id="search" type="search" placeholder="Rechercher des vidéos, #tags, @auteurs…" aria-label="Rechercher" />
+    </div>
+    <nav class="nav-actions">
+      <button class="btn small ghost" id="uploadBtn" aria-label="Uploader une vidéo">Uploader</button>
+      <button class="btn small primary" id="loginBtn" aria-label="Se connecter">Se connecter</button>
+    </nav>
+  </header>
+
+  <main id="feed" class="feed" aria-live="polite" aria-busy="true">
+    <!-- Les cartes vidéo seront injectées par app.js -->
+  </main>
+
+  <div id="commentModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="commentTitle">
+    <div class="modal-content glass">
+      <div class="modal-header">
+        <h3 id="commentTitle">Commentaires</h3>
+        <button class="icon close" id="closeComments" aria-label="Fermer">✕</button>
+      </div>
+      <div id="commentList" class="comments"></div>
+      <form id="commentForm" class="comment-form" autocomplete="off">
+        <input type="text" id="commentInput" placeholder="Écrire un commentaire…" required maxlength="240" />
+        <button class="btn primary" type="submit">Envoyer</button>
+      </form>
+    </div>
+    <div class="modal-backdrop"></div>
+  </div>
+
+  <button id="toTop" class="to-top hidden" aria-label="Remonter en haut">↑</button>
+
+  <script src="assets/js/app.js" defer></script>
+</body>
+</html>
